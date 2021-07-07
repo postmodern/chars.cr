@@ -126,16 +126,25 @@ Spectator.describe Chars::CharSet do
     end
   end
 
-  describe "#includes?(*Int32)" do
+  describe "#includes?(Int32)" do
     it "should include Ints32 values" do
       expect(subject).to contain(0x42)
     end
   end
 
-  describe "#includes?(*Char)" do
+  describe "#includes?(Char)" do
     it "should include Char values" do
       expect(subject).to contain('B')
     end
+  end
+
+  describe "#each_byte" do
+  end
+
+  describe "#each_char" do
+  end
+
+  describe "#each" do
   end
 
   describe "#select_bytes" do
@@ -152,6 +161,18 @@ Spectator.describe Chars::CharSet do
 
       expect(sub_set).to be == ['A', 'B']
     end
+  end
+
+  describe "#select" do
+  end
+
+  describe "#map_bytes" do
+  end
+
+  describe "#map_chars" do
+  end
+
+  describe "#map" do
   end
 
   describe "#random_byte" do
