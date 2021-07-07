@@ -1,0 +1,323 @@
+require "./spec_helper"
+require "../src/chars/char_set"
+
+Spectator.describe Chars::CharSet do
+  let(byte_range) { 0x41..0x5a }
+  let(char_range) { 'A'..'Z' }
+  let(bytes)      { byte_range.to_a }
+  let(chars)      { char_range.to_a }
+
+  subject { described_class.new(chars) }
+
+  describe "#initialize" do
+    context "when given an Array of Int32s" do
+      subject { described_class.new(bytes) }
+
+      it "must populate #chars" do
+        expect(subject.chars).to eq(chars)
+      end
+
+      it "must populate #bytes" do
+        expect(subject.bytes).to eq(bytes)
+      end
+    end
+
+    context "when given an Array of Chars" do
+      subject { described_class.new(chars) }
+
+      it "must populate #chars" do
+        expect(subject.chars).to eq(chars)
+      end
+
+      it "must populate #bytes" do
+        expect(subject.bytes).to eq(bytes)
+      end
+    end
+
+    context "when given a Range(Int32, Int32)" do
+      subject { described_class.new(byte_range) }
+
+      it "must populate #chars" do
+        expect(subject.chars).to eq(chars)
+      end
+
+      it "must populate #bytes" do
+        expect(subject.bytes).to eq(bytes)
+      end
+    end
+
+    context "when given a Range of Chars" do
+      subject { described_class.new(char_range) }
+
+      it "must populate #chars" do
+        expect(subject.chars).to eq(chars)
+      end
+
+      it "must populate #bytes" do
+        expect(subject.bytes).to eq(bytes)
+      end
+    end
+  end
+
+  describe "[]" do
+    context "when given multiple byte arguments" do
+    end
+
+    context "when given multiple char arguments" do
+    end
+
+    context "when given byte and char arguments" do
+    end
+
+    context "when given a Range(Int32, Int32) argument" do
+      subject { described_class[byte_range] }
+
+      it "must expand the range" do
+        expect(subject.bytes).to eq(byte_range.to_a)
+      end
+    end
+
+    context "when given a Range(Char, Char) argument" do
+      subject { described_class[char_range] }
+
+      it "must expand the range" do
+        expect(subject.chars).to eq(char_range.to_a)
+      end
+    end
+  end
+
+  describe "#<<(Char)" do
+    let(char) { 'A' }
+    let(byte) { char.ord.to_u8 }
+
+    subject { described_class.new }
+
+    before_each { subject << char }
+
+    it "must add the Char to #char_set" do
+      expect(subject.char_set.includes?(char)).to be(true)
+    end
+
+    it "must add the byte equivalent of the Char to #byte_set" do
+      expect(subject.byte_set.includes?(byte)).to be(true)
+    end
+  end
+
+  describe "#<<(Int32)" do
+    let(char) { 'A' }
+    let(byte) { char.ord.to_u8 }
+
+    subject do
+      described_class.new << byte
+    end
+
+    it "must add the Int32 to #byte_set" do
+      expect(subject.byte_set.includes?(byte)).to be(true)
+    end
+
+    it "must add the char equivalent of the Int32 to #byte_set" do
+      expect(subject.char_set.includes?(char)).to be(true)
+    end
+  end
+
+  describe "#includes_char?" do
+    it "should include Strings" do
+      expect(subject.includes_char?('A')).to be(true)
+    end
+  end
+
+  describe "#includes?(*Int32)" do
+    it "should include Ints32 values" do
+      expect(subject).to contain(0x42)
+    end
+  end
+
+  describe "#includes?(*Char)" do
+    it "should include Char values" do
+      expect(subject).to contain('B')
+    end
+  end
+
+  describe "#select_bytes" do
+    it "should be able to select bytes" do
+      sub_set = subject.select_bytes { |c| c <= 0x42 }
+
+      expect(sub_set).to be == [0x41, 0x42]
+    end
+  end
+
+  describe "#select_chars" do
+    it "should be able to select chars" do
+      sub_set = subject.select_chars { |c| c <= 'B' }
+
+      expect(sub_set).to be == ['A', 'B']
+    end
+  end
+
+  describe "#random_byte" do
+    it "should return a random byte" do
+      expect(subject).to contain(subject.random_byte)
+    end
+  end
+
+  describe "#random_char" do
+    it "should return a random char" do
+      expect(subject.includes_char?(subject.random_char)).to be(true)
+    end
+  end
+
+  describe "#each_random_byte" do
+    it "should iterate over n random bytes" do
+      random_bytes = [] of Int32
+
+      subject.each_random_byte(10) { |b| random_bytes << b }
+
+      expect(random_bytes.all? { |b| subject.includes_byte?(b) }).to be(true)
+    end
+  end
+
+  describe "#each_random_char" do
+    it "should iterate over n random chars" do
+      random_chars = [] of Char
+
+      subject.each_random_char(10) { |c| random_chars << c }
+
+      expect(random_chars.all? { |c| subject.includes_char?(c) }).to be(true)
+    end
+  end
+
+  describe "#random_bytes(Int)" do
+    it "should return a random Array of bytes" do
+      random_bytes = subject.random_bytes(10)
+
+      expect(random_bytes.all? { |b| subject.includes?(b) }).to be(true)
+    end
+  end
+
+  describe "#random_bytes(Range(Int, Int))" do
+    it "should return a random Array of bytes with a varying length" do
+      random_bytes = subject.random_bytes(5..10)
+
+      expect(random_bytes.size).to be_between(5, 10)
+      expect(random_bytes.all? { |b| subject.includes?(b) }).to be(true)
+    end
+  end
+
+  describe "#random_chars(Int)" do
+    it "should return a random Array of chars" do
+      random_chars = subject.random_chars(10)
+
+      expect(random_chars.all? { |c| subject.includes_char?(c) }).to be(true)
+    end
+  end
+
+  describe "#random_chars(Range(Int, Int))" do
+    it "should return a random Array of chars with a varying length" do
+      random_chars = subject.random_chars(5..10)
+
+      expect(random_chars.size).to be_between(5, 10)
+      expect(random_chars.all? { |c| subject.includes_char?(c) }).to be(true)
+    end
+  end
+
+  describe "#random_string" do
+    it "should return a random String of chars" do
+      random_string = subject.random_string(10)
+
+      expect(random_string.chars.all? { |b|
+        subject.includes_char?(b)
+      }).to be(true)
+    end
+
+    context "with a range of lengths" do
+      it "should return a random String of chars with a varying length" do
+        string = subject.random_string(5..10)
+
+        expect(string.size).to be_between(5, 10)
+        expect(string.chars.all? { |b| subject.includes_char?(b) }).to be(true)
+      end
+    end
+  end
+  
+  describe "#random_distinct_bytes" do
+    it "should return a random Array of unique bytes" do
+      bytes = subject.random_distinct_bytes(10)
+
+      expect(bytes.uniq).to be == bytes
+      expect(bytes.all? { |b| subject.includes?(b) }).to be(true)
+    end
+
+    context "with a range of lengths" do
+      it "should return a random Array of unique bytes with a varying length" do
+        bytes = subject.random_distinct_bytes(5..10)
+
+        expect(bytes.uniq).to be == bytes
+        expect(bytes.size).to be_between(5, 10)
+        expect(bytes.all? { |b| subject.includes?(b) }).to be(true)
+      end
+    end
+  end
+
+  describe "#random_distinct_chars" do
+    it "should return a random Array of unique chars" do
+      chars = subject.random_distinct_chars(10)
+
+      expect(chars.uniq).to be == chars
+      expect(chars.all? { |c| subject.includes_char?(c) }).to be(true)
+    end
+
+    context "with a range of lengths" do
+      it "should return a random Array of unique chars with a varying length" do
+        chars = subject.random_distinct_chars(5..10)
+
+        expect(chars.uniq).to be == chars
+        expect(chars.size).to be_between(5, 10)
+        expect(chars.all? { |c| subject.includes_char?(c) }).to be(true)
+      end
+    end
+  end
+
+  describe "#substrings" do
+    it "should find one sub-string from a String belonging to the char set" do
+      expect(subject.substrings("AAAA")).to be == ["AAAA"]
+    end
+
+    it "should find sub-strings from a String belonging to the char set" do
+      expect(subject.substrings("AAAA!B!CCCCCC")).to be == [
+        "AAAA",
+        "CCCCCC"
+      ]
+    end
+  end
+
+  describe "#==" do
+    it "should be able to be compared with another set of chars" do
+      expect(subject).to be == described_class['A'..'Z']
+    end
+  end
+
+  describe "#===" do
+    it "should determine if a String is made up of the characters from the char set" do
+      expect(subject).to be === "AABCBAA"
+      expect(subject).to_not be === "AA!!EE"
+    end
+  end
+
+  describe "#|" do
+    it "should be able to be unioned with another set of chars" do
+      super_set = (subject | described_class['0'])
+
+      expect(super_set).to be_kind_of(described_class)
+      expect(super_set.includes_char?('0')).to be(true)
+    end
+  end
+
+  describe "#-" do
+    it "should be able to be removed from another set of chars" do
+      sub_set = (subject - described_class['A'])
+
+      expect(sub_set).to be_kind_of(described_class)
+      expect(sub_set.includes_char?('A')).to be(false)
+    end
+  end
+end
