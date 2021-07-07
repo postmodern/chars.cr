@@ -453,6 +453,103 @@ Spectator.describe Chars::CharSet do
     end
   end
 
+  describe "#|" do
+    it "should be able to be unioned with another set of chars" do
+      super_set = (subject | described_class['0'])
+
+      expect(super_set).to be_kind_of(described_class)
+      expect(super_set.includes_char?('0')).to be(true)
+    end
+  end
+
+  describe "#+" do
+  end
+
+  describe "#-" do
+    it "should be able to be removed from another set of chars" do
+      sub_set = (subject - described_class['A'])
+
+      expect(sub_set).to be_kind_of(described_class)
+      expect(sub_set.includes_char?('A')).to be(false)
+    end
+  end
+
+  describe "#&" do
+    context "when the two CharSets contain common characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(other) { described_class.new(['B', 'C', 'D']) }
+
+      it "must return the intersection of the two char sets" do
+        expect(subject & other).to eq(described_class.new(['B', 'C']))
+      end
+    end
+
+    context "when the two CharSets do not contain any common characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(char_set2) { described_class.new(['X', 'Y', 'Z']) }
+
+      it do
+        expect(subject & char_set2).to eq(described_class.new([] of Char))
+      end
+    end
+  end
+
+  describe "#intersects?" do
+    context "when the two CharSets contain common characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(other) { described_class.new(['B', 'C', 'D']) }
+
+      it do
+        expect(subject.intersects?(other)).to be(true)
+      end
+    end
+
+    context "when the two CharSets do not contain any common characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(other) { described_class.new(['X', 'Y', 'Z']) }
+
+      it do
+        expect(subject.intersects?(other)).to be(false)
+      end
+    end
+  end
+
+  describe "#subset_of?" do
+    context "when all of the CharSet characters belongs to the other CharSet" do
+      subject { described_class.new(['A', 'B']) }
+
+      let(other) { described_class.new(['A', 'B', 'C']) }
+
+      it do
+        expect(subject.subset_of?(other)).to be(true)
+      end
+    end
+
+    context "when the CharSet contains additional characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(other) { described_class.new(['A', 'B']) }
+
+      it do
+        expect(subject.subset_of?(other)).to be(false)
+      end
+    end
+
+    context "when the two CharSets do not contain any common characters" do
+      subject { described_class.new(['A', 'B', 'C']) }
+
+      let(other) { described_class.new(['X', 'Y', 'Z']) }
+
+      it do
+        expect(subject.subset_of?(other)).to be(false)
+      end
+    end
+  end
+
   describe "#==" do
     it "should be able to be compared with another set of chars" do
       expect(subject).to be == described_class['A'..'Z']
@@ -466,21 +563,6 @@ Spectator.describe Chars::CharSet do
     end
   end
 
-  describe "#|" do
-    it "should be able to be unioned with another set of chars" do
-      super_set = (subject | described_class['0'])
-
-      expect(super_set).to be_kind_of(described_class)
-      expect(super_set.includes_char?('0')).to be(true)
-    end
-  end
-
-  describe "#-" do
-    it "should be able to be removed from another set of chars" do
-      sub_set = (subject - described_class['A'])
-
-      expect(sub_set).to be_kind_of(described_class)
-      expect(sub_set.includes_char?('A')).to be(false)
-    end
+  describe "#~" do
   end
 end

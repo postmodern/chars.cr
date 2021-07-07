@@ -397,7 +397,7 @@ module Chars
     #
     # Determines whether the `CharSet` intersects with another `CharSet`.
     #
-    def insersects?(other : CharSet) : Bool
+    def intersects?(other : CharSet) : Bool
       @char_set.any? { |char| other.includes_char?(char) }
     end
 
