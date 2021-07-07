@@ -331,10 +331,10 @@ module Chars
     # `CharSet`.
     #
     def substrings_with_indexes(data : String, min_length : Int = 4) : Array(Tuple(String, Int32))
-      array = [] of Tuple(String, Int)
+      array = [] of Tuple(String, Int32)
 
       each_substring_with_index(data,min_length) do |substring,index|
-        array < {substring, index}
+        array << {substring, index}
       end
 
       return array

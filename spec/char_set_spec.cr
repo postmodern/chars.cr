@@ -277,6 +277,169 @@ Spectator.describe Chars::CharSet do
     end
   end
 
+  describe "#each_substring_with_index(&block : (String, Int32) ->)" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    let(:string) { "....AAAA....BBBB....CCCC...." }
+
+    it "must yield each matching substring and index" do
+      yielded_args = [] of {String, Int32}
+
+      subject.each_substring_with_index(string) do |substring,index|
+        yielded_args << {substring, index}
+      end
+
+      expect(yielded_args).to eq(
+        [
+          {"AAAA", string.index("AAAA")},
+          {"BBBB", string.index("BBBB")},
+          {"CCCC", string.index("CCCC")}
+        ]
+      )
+    end
+
+    context "when the string begins with a matching substring" do
+      let(:string) { "AAAA...." }
+
+      it "must yield the first matching substring" do
+        yielded_args = [] of {String, Int32}
+
+        subject.each_substring_with_index(string) do |substring,index|
+          yielded_args << {substring, index}
+        end
+
+        expect(yielded_args.first).to eq({"AAAA", 0})
+      end
+    end
+
+    context "when the string ends with a matching substring" do
+      let(:string) { "AAAA....BBBB....CCCC" }
+
+      it "must yield the last matching substring" do
+        yielded_args = [] of {String, Int32}
+
+        subject.each_substring_with_index(string) do |substring,index|
+          yielded_args << {substring, index}
+        end
+
+        expect(yielded_args.last).to eq({"CCCC", string.rindex("CCCC")})
+      end
+    end
+
+    context "when the entire string is a matching substring" do
+      let(:string) { "AAAAAAAA" }
+
+      it "must yield the entire string" do
+        yielded_args = [] of {String, Int32}
+
+        subject.each_substring_with_index(string) do |substring,index|
+          yielded_args << {substring, index}
+        end
+
+        expect(yielded_args).to eq([ {string, 0} ])
+      end
+    end
+
+    context "when the matching substrings are shorter than the min_length" do
+      let(min_length) { 2 }
+
+      let(string) { "AA..B...CC.."}
+
+      it "must ignore the substrings shorter than min_length" do
+        yielded_args = [] of {String, Int32}
+
+        subject.each_substring_with_index(string,min_length) do |substring,index|
+          yielded_args << {substring, index}
+        end
+
+        expect(yielded_args).to eq(
+          [
+            {"AA", string.index("AA")},
+            {"CC", string.index("CC")}
+          ]
+        )
+      end
+    end
+
+    context "when min_length 0" do
+      let(min_length) { 0 }
+
+      let(string) { "A.BB..CCC..."}
+
+      it "must yield all matching substrings, regardless of length" do
+        yielded_args = [] of {String, Int32}
+
+        subject.each_substring_with_index(string,min_length) do |substring,index|
+          yielded_args << {substring, index}
+        end
+
+        expect(yielded_args).to eq(
+          [
+            {"A",   string.index("A")},
+            {"BB",  string.index("BB")},
+            {"CCC", string.index("CCC")}
+          ]
+        )
+      end
+    end
+  end
+
+  describe "#substrings_with_indexes" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    let(:string) { "....AAAA....BBBB....CCCC...." }
+
+    it "must return the Array of substrings and their indexes" do
+      expect(subject.substrings_with_indexes(string)).to eq(
+        [
+          {"AAAA", string.index("AAAA")},
+          {"BBBB", string.index("BBBB")},
+          {"CCCC", string.index("CCCC")}
+        ]
+      )
+    end
+  end
+
+  describe "#each_substring(&block : (String) ->)" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    let(:string) { "....AAAA....BBBB....CCCC...." }
+
+    it "must yield each matching substring" do
+      yielded_args = [] of String
+
+      subject.each_substring(string) do |substring|
+        yielded_args << substring
+      end
+
+      expect(yielded_args).to eq(
+        [
+          "AAAA",
+          "BBBB",
+          "CCCC"
+        ]
+      )
+    end
+  end
+
+  describe "#substrings" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    let(:string) { "....AAAA....BBBB....CCCC...." }
+
+    it "must return the Array of matching substrings" do
+      yielded_args = [] of String
+
+      expect(subject.substrings(string)).to eq(
+        [
+          "AAAA",
+          "BBBB",
+          "CCCC"
+        ]
+      )
+    end
+  end
+
   describe "#substrings" do
     it "should find one sub-string from a String belonging to the char set" do
       expect(subject.substrings("AAAA")).to be == ["AAAA"]
