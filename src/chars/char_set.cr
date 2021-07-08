@@ -84,9 +84,16 @@ module Chars
     #
     # Appends a new byte value to the `CharSet`.
     #
-    def <<(value : UInt8 | Int32) : CharSet
+    def <<(value : UInt8) : CharSet
+      self << value.to_i32
+    end
+
+    #
+    # Appends a new byte value to the `CharSet`.
+    #
+    def <<(value : Int32) : CharSet
       @char_set << value.chr
-      @byte_set << value.to_i32
+      @byte_set << value
       return self
     end
 
