@@ -199,19 +199,19 @@ Spectator.describe Chars::CharSet do
 
   describe "#includes?(Int32)" do
     it "must include Ints32 values" do
-      expect(subject).to contain(0x42)
+      expect(subject.includes?(0x42)).to be(true)
     end
   end
 
   describe "#includes?(UInt8)" do
     it "must include UInt8 values" do
-      expect(subject).to contain(0x42_u8)
+      expect(subject.includes?(0x42_u8)).to be(true)
     end
   end
 
   describe "#includes?(Char)" do
     it "must include Char values" do
-      expect(subject).to contain('B')
+      expect(subject.includes?('B')).to be(true)
     end
   end
 
