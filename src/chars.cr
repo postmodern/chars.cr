@@ -1,5 +1,4 @@
 require "./chars/char_set"
-require "./chars/version"
 
 module Chars
   # The numeric decimal character set
