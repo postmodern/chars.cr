@@ -41,9 +41,9 @@ module Chars
     # Creates a new `CharSet` using the list of chars, bytes, or ranges of
     # chars/bytes.
     #
-    def self.[](*values : Int32 | Char | Range(UInt8, UInt8) |
-                                        Range(Int32, Int32) |
-                                        Range(Char, Char)) : CharSet
+    def self.[](*values : UInt8 | Int32 | Char | Range(UInt8, UInt8) |
+                                                 Range(Int32, Int32) |
+                                                 Range(Char, Char)) : CharSet
       char_set = new()
 
       values.each do |value|
