@@ -139,12 +139,39 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#each_byte" do
+    it "must yield each byte in the CharSet" do
+      yielded_bytes = [] of Int32
+
+      subject.each_byte do |b|
+        yielded_bytes << b
+      end
+
+      expect(yielded_bytes).to eq(subject.bytes)
+    end
   end
 
   describe "#each_char" do
+    it "must yield each char in the CharSet" do
+      yielded_chars = [] of Char
+
+      subject.each_char do |c|
+        yielded_chars << c
+      end
+
+      expect(yielded_chars).to eq(subject.chars)
+    end
   end
 
   describe "#each" do
+    it "must yield each char in the CharSet" do
+      yielded_chars = [] of Char
+
+      subject.each do |c|
+        yielded_chars << c
+      end
+
+      expect(yielded_chars).to eq(subject.chars)
+    end
   end
 
   describe "#select_bytes" do
@@ -164,15 +191,35 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#select" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    it "must select chars from the CharSet based on the given block" do
+      expect(subject.select { |c| c > 'A' }).to eq(['B', 'C'])
+    end
   end
 
   describe "#map_bytes" do
+    subject { described_class.new([0x41, 0x42, 0x43]) }
+
+    it "must map each byte in the CharSet using the given block" do
+      expect(subject.map_bytes { |b| b + 1 }).to eq([0x42, 0x43, 0x44])
+    end
   end
 
   describe "#map_chars" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    it "must map each chars in the CharSet using the given block" do
+      expect(subject.map_chars { |c| c - 'A' }).to eq([0, 1, 2])
+    end
   end
 
   describe "#map" do
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    it "must map each chars in the CharSet using the given block" do
+      expect(subject.map_chars { |c| c - 'A' }).to eq([0, 1, 2])
+    end
   end
 
   describe "#random_byte" do
@@ -475,11 +522,12 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#|" do
-    it "should be able to be unioned with another set of chars" do
-      super_set = (subject | described_class['0'])
+    subject { described_class.new(['A', 'B', 'C']) }
 
-      expect(super_set).to be_kind_of(described_class)
-      expect(super_set.includes_char?('0')).to be(true)
+    let(other) { described_class.new(['B', 'C', 'D']) }
+
+    it "must unioned the chars from another CharSet with the CharSet" do
+      expect(subject | other).to eq(described_class.new(['A', 'B', 'C', 'D']))
     end
   end
 
@@ -578,9 +626,18 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#===" do
-    it "should determine if a String is made up of the characters from the char set" do
-      expect(subject).to be === "AABCBAA"
-      expect(subject).to_not be === "AA!!EE"
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    context "when every char in the String also belongs to the CharSet" do
+      let(string) { "ABCABCABC" }
+
+      it { expect(subject === string).to be(true) }
+    end
+
+    context "when the String contains a char not in the CharSet" do
+      let(string) { "ABCABCABCX" }
+
+      it { expect(subject === string).to be(false) }
     end
   end
 
