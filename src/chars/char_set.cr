@@ -431,8 +431,8 @@ module Chars
     # See `#===`.
     #
     @[AlwaysInline]
-    def =~(other)
-      self === other
+    def =~(string : String)
+      self === string
     end
 
     delegate to_a, to: @char_set
