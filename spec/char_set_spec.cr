@@ -193,26 +193,66 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#includes_char?(Char)" do
-    it "must include Char" do
-      expect(subject.includes_char?('A')).to be(true)
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    context "when the CharSet contains the given char" do
+      it do
+        expect(subject.includes_char?('A')).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given char" do
+      it do
+        expect(subject.includes_char?('X')).to be(false)
+      end
     end
   end
 
   describe "#includes?(Int32)" do
-    it "must include Ints32 values" do
-      expect(subject.includes?(0x42)).to be(true)
+    subject { described_class.new([0x41, 0x42, 0x43]) }
+
+    context "when the CharSet contains the given byte value" do
+      it do
+        expect(subject.includes?(0x42)).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given byte value" do
+      it do
+        expect(subject.includes?(0xff)).to be(false)
+      end
     end
   end
 
   describe "#includes?(UInt8)" do
-    it "must include UInt8 values" do
-      expect(subject.includes?(0x42_u8)).to be(true)
+    subject { described_class.new([0x41, 0x42, 0x43]) }
+
+    context "when the CharSet contains the given byte value" do
+      it do
+        expect(subject.includes?(0x42_u8)).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given byte value" do
+      it do
+        expect(subject.includes?(0xff_u8)).to be(false)
+      end
     end
   end
 
   describe "#includes?(Char)" do
-    it "must include Char values" do
-      expect(subject.includes?('B')).to be(true)
+    subject { described_class.new(['A', 'B', 'C']) }
+
+    context "when the CharSet contains the given char value" do
+      it do
+        expect(subject.includes?('B')).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given char value" do
+      it do
+        expect(subject.includes?('X')).to be(false)
+      end
     end
   end
 
