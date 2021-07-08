@@ -191,8 +191,9 @@ Spectator.describe Chars::CharSet do
       end
     end
   end
-  describe "#includes_char?" do
-    it "must include Strings" do
+
+  describe "#includes_char?(Char)" do
+    it "must include Char" do
       expect(subject.includes_char?('A')).to be(true)
     end
   end
