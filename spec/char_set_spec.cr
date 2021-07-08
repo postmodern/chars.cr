@@ -203,6 +203,12 @@ Spectator.describe Chars::CharSet do
     end
   end
 
+  describe "#includes?(UInt8)" do
+    it "must include UInt8 values" do
+      expect(subject).to contain(0x42_u8)
+    end
+  end
+
   describe "#includes?(Char)" do
     it "must include Char values" do
       expect(subject).to contain('B')
