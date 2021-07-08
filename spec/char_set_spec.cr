@@ -61,12 +61,39 @@ Spectator.describe Chars::CharSet do
 
   describe "[]" do
     context "when given multiple byte arguments" do
+      subject { described_class[0x41, 0x42, 0x43] }
+
+      it "must populate #byte_set with the given bytes" do
+        expect(subject.byte_set).to eq(Set{0x41, 0x42, 0x43})
+      end
+
+      it "must populate #char_set with the character values of the bytes" do
+        expect(subject.char_set).to eq(Set{0x41.chr, 0x42.chr, 0x43.chr})
+      end
     end
 
     context "when given multiple char arguments" do
+      subject { described_class['A', 'B', 'C'] }
+
+      it "must populate #char_set with the given chars" do
+        expect(subject.char_set).to eq(Set{'A', 'B', 'C'})
+      end
+
+      it "must populate #byte_set with the byte values of the chars" do
+        expect(subject.byte_set).to eq(Set{'A'.ord, 'B'.ord, 'C'.ord})
+      end
     end
 
     context "when given byte and char arguments" do
+      subject { described_class[0x41, 'B', 0x43] }
+
+      it "must populate #byte_set with the given bytes" do
+        expect(subject.byte_set).to eq(Set{0x41, 'B'.ord, 0x43})
+      end
+
+      it "must populate #char_set with the character values of the bytes" do
+        expect(subject.char_set).to eq(Set{0x41.chr, 'B', 0x43.chr})
+      end
     end
 
     context "when given a Range(Int32, Int32) argument" do
