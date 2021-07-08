@@ -77,7 +77,7 @@ module Chars
     #
     def <<(value : Char) : CharSet
       @char_set << value
-      @byte_set << value.ord.as(Int32)
+      @byte_set << value.ord
       return self
     end
 
