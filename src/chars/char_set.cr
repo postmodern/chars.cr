@@ -185,15 +185,15 @@ module Chars
     #
     # Returns a random byte from the `CharSet`.
     #
-    def random_byte : Int32
-      @byte_set.sample
+    def random_byte(random = Random::DEFAULT) : Int32
+      @byte_set.sample(random)
     end
 
     #
     # Returns a random char from the `CharSet`.
     #
-    def random_char : Char
-      @char_set.sample
+    def random_char(random = Random::DEFAULT) : Char
+      @char_set.sample(random)
     end
 
     #
@@ -213,15 +213,16 @@ module Chars
     #
     # Returns an Array of `n` random bytes from the `CharSet`.
     #
-    def random_bytes(length : Int) : Array(Int32)
-      @byte_set.sample(length)
+    def random_bytes(length : Int, random = Random::DEFAULT) : Array(Int32)
+      @byte_set.sample(length,random)
     end
 
     #
     # Returns an Array of random bytes from the `CharSet`.
     #
-    def random_bytes(lengths : Array(Int) | Range(Int, Int)) : Array(Int32)
-      Array(Int32).new(lengths.sample) do
+    def random_bytes(lengths : Array(Int) | Range(Int, Int),
+                     random = Random::DEFAULT) : Array(Int32)
+      Array(Int32).new(lengths.sample(random)) do
         random_byte
       end
     end
@@ -229,15 +230,16 @@ module Chars
     #
     # Returns an Array of random chars from the `CharSet`.
     #
-    def random_chars(length : Int) : Array(Char)
-      @char_set.sample(length)
+    def random_chars(length : Int, random = Random::DEFAULT) : Array(Char)
+      @char_set.sample(length,random)
     end
 
     #
     # Returns an Array of random chars from the `CharSet`.
     #
-    def random_chars(lengths : Array(Int) | Range(Int, Int)) : Array(Char)
-      Array(Char).new(lengths.sample) do
+    def random_chars(lengths : Array(Int) | Range(Int, Int),
+                     random = Random::DEFAULT) : Array(Char)
+      Array(Char).new(lengths.sample(random)) do
         random_char
       end
     end
@@ -259,8 +261,9 @@ module Chars
     #
     # Returns an Array of random, but unique, bytes from the `CharSet`.
     #
-    def random_distinct_bytes(length : Array(Int)) : Array(Int32)
-      bytes.shuffle[0,length.sample]
+    def random_distinct_bytes(length : Array(Int),
+                              random = Random::DEFAULT) : Array(Int32)
+      bytes.shuffle[0,length.sample(random)]
     end
 
     #
@@ -280,8 +283,9 @@ module Chars
     #
     # Returns an Array of random, but unique, chars from the `CharSet`.
     #
-    def random_distinct_chars(length : Array(Int)) : Array(Char)
-      chars.shuffle[0,length.sample]
+    def random_distinct_chars(length : Array(Int),
+                              random = Random::DEFAULT) : Array(Char)
+      chars.shuffle[0,length.sample(random)]
     end
 
     #
