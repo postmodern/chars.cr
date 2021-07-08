@@ -122,7 +122,7 @@ module Chars
     # See `#includes_byte?`.
     #
     @[AlwaysInline]
-    def includes?(byte : Int32) : Bool
+    def includes?(byte : UInt8 | Int32) : Bool
       includes_byte?(byte)
     end
 
