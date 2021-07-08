@@ -147,6 +147,50 @@ Spectator.describe Chars::CharSet do
     end
   end
 
+  describe "#includes_byte?(Int32)" do
+    context "when the CharSet contains the given byte" do
+      let(byte) { 0x42 }
+
+      subject { described_class.new([0x41, byte, 0x43]) }
+
+      it do
+        expect(subject.includes_byte?(byte)).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given byte" do
+      let(byte) { 0xff }
+
+      subject { described_class.new([0x41, 0x42, 0x43]) }
+
+      it do
+        expect(subject.includes_byte?(byte)).to be(false)
+      end
+    end
+  end
+
+
+  describe "#includes_byte?(UInt8)" do
+    context "when the CharSet contains the given byte" do
+      let(byte) { 0x42_u8 }
+
+      subject { described_class.new([0x41, byte, 0x43]) }
+
+      it do
+        expect(subject.includes_byte?(byte)).to be(true)
+      end
+    end
+
+    context "when the CharSet does not contain the given byte" do
+      let(byte) { 0xff_u8 }
+
+      subject { described_class.new([0x41, 0x42, 0x43]) }
+
+      it do
+        expect(subject.includes_byte?(byte)).to be(false)
+      end
+    end
+  end
   describe "#includes_char?" do
     it "must include Strings" do
       expect(subject.includes_char?('A')).to be(true)

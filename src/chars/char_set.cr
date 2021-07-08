@@ -100,7 +100,14 @@ module Chars
     #
     # Determines if the given byte exists in the `CharSet`.
     #
-    def includes_byte?(byte : UInt8 | Int32) : Bool
+    def includes_byte?(byte : UInt8) : Bool
+      includes_byte?(byte.to_i32)
+    end
+
+    #
+    # Determines if the given byte exists in the `CharSet`.
+    #
+    def includes_byte?(byte : Int32) : Bool
       @byte_set.includes?(byte)
     end
 
