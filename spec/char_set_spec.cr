@@ -121,19 +121,19 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#includes_char?" do
-    it "should include Strings" do
+    it "must include Strings" do
       expect(subject.includes_char?('A')).to be(true)
     end
   end
 
   describe "#includes?(Int32)" do
-    it "should include Ints32 values" do
+    it "must include Ints32 values" do
       expect(subject).to contain(0x42)
     end
   end
 
   describe "#includes?(Char)" do
-    it "should include Char values" do
+    it "must include Char values" do
       expect(subject).to contain('B')
     end
   end
@@ -175,7 +175,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#select_bytes" do
-    it "should be able to select bytes" do
+    it "must be able to select bytes" do
       sub_set = subject.select_bytes { |c| c <= 0x42 }
 
       expect(sub_set).to be == [0x41, 0x42]
@@ -183,7 +183,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#select_chars" do
-    it "should be able to select chars" do
+    it "must be able to select chars" do
       sub_set = subject.select_chars { |c| c <= 'B' }
 
       expect(sub_set).to be == ['A', 'B']
@@ -223,19 +223,19 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_byte" do
-    it "should return a random byte" do
+    it "must return a random byte" do
       expect(subject).to contain(subject.random_byte)
     end
   end
 
   describe "#random_char" do
-    it "should return a random char" do
+    it "must return a random char" do
       expect(subject.includes_char?(subject.random_char)).to be(true)
     end
   end
 
   describe "#each_random_byte" do
-    it "should iterate over n random bytes" do
+    it "must iterate over n random bytes" do
       random_bytes = [] of Int32
 
       subject.each_random_byte(10) { |b| random_bytes << b }
@@ -245,7 +245,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#each_random_char" do
-    it "should iterate over n random chars" do
+    it "must iterate over n random chars" do
       random_chars = [] of Char
 
       subject.each_random_char(10) { |c| random_chars << c }
@@ -255,7 +255,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_bytes(Int)" do
-    it "should return a random Array of bytes" do
+    it "must return a random Array of bytes" do
       random_bytes = subject.random_bytes(10)
 
       expect(random_bytes.all? { |b| subject.includes?(b) }).to be(true)
@@ -263,7 +263,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_bytes(Range(Int, Int))" do
-    it "should return a random Array of bytes with a varying length" do
+    it "must return a random Array of bytes with a varying length" do
       random_bytes = subject.random_bytes(5..10)
 
       expect(random_bytes.size).to be_between(5, 10)
@@ -272,7 +272,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_chars(Int)" do
-    it "should return a random Array of chars" do
+    it "must return a random Array of chars" do
       random_chars = subject.random_chars(10)
 
       expect(random_chars.all? { |c| subject.includes_char?(c) }).to be(true)
@@ -280,7 +280,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_chars(Range(Int, Int))" do
-    it "should return a random Array of chars with a varying length" do
+    it "must return a random Array of chars with a varying length" do
       random_chars = subject.random_chars(5..10)
 
       expect(random_chars.size).to be_between(5, 10)
@@ -289,7 +289,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_string" do
-    it "should return a random String of chars" do
+    it "must return a random String of chars" do
       random_string = subject.random_string(10)
 
       expect(random_string.chars.all? { |b|
@@ -298,7 +298,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "with a range of lengths" do
-      it "should return a random String of chars with a varying length" do
+      it "must return a random String of chars with a varying length" do
         string = subject.random_string(5..10)
 
         expect(string.size).to be_between(5, 10)
@@ -308,7 +308,7 @@ Spectator.describe Chars::CharSet do
   end
   
   describe "#random_distinct_bytes" do
-    it "should return a random Array of unique bytes" do
+    it "must return a random Array of unique bytes" do
       bytes = subject.random_distinct_bytes(10)
 
       expect(bytes.uniq).to be == bytes
@@ -316,7 +316,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "with a range of lengths" do
-      it "should return a random Array of unique bytes with a varying length" do
+      it "must return a random Array of unique bytes with a varying length" do
         bytes = subject.random_distinct_bytes(5..10)
 
         expect(bytes.uniq).to be == bytes
@@ -327,7 +327,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#random_distinct_chars" do
-    it "should return a random Array of unique chars" do
+    it "must return a random Array of unique chars" do
       chars = subject.random_distinct_chars(10)
 
       expect(chars.uniq).to be == chars
@@ -335,7 +335,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "with a range of lengths" do
-      it "should return a random Array of unique chars with a varying length" do
+      it "must return a random Array of unique chars with a varying length" do
         chars = subject.random_distinct_chars(5..10)
 
         expect(chars.uniq).to be == chars
@@ -509,11 +509,11 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#substrings" do
-    it "should find one sub-string from a String belonging to the char set" do
+    it "must find one sub-string from a String belonging to the char set" do
       expect(subject.substrings("AAAA")).to be == ["AAAA"]
     end
 
-    it "should find sub-strings from a String belonging to the char set" do
+    it "must find sub-strings from a String belonging to the char set" do
       expect(subject.substrings("AAAA!B!CCCCCC")).to be == [
         "AAAA",
         "CCCCCC"
@@ -535,7 +535,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#-" do
-    it "should be able to be removed from another set of chars" do
+    it "must be able to be removed from another set of chars" do
       sub_set = (subject - described_class['A'])
 
       expect(sub_set).to be_kind_of(described_class)
@@ -620,7 +620,7 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#==" do
-    it "should be able to be compared with another set of chars" do
+    it "must be able to be compared with another set of chars" do
       expect(subject).to be == described_class['A'..'Z']
     end
   end
