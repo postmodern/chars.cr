@@ -17,7 +17,7 @@ module Chars
     #
     # Initializes the `CharSet` using the list of bytes or chars.
     #
-    def initialize(values : Enumerable(Int32 | Char))
+    def initialize(values : Enumerable(UInt8 | Int32 | Char))
       initialize()
 
       values.each do |value|
@@ -28,7 +28,7 @@ module Chars
     #
     # Initializes the `CharSet` using the list of bytes or chars.
     #
-    def initialize(values : Indexable(Int32 | Char))
+    def initialize(values : Indexable(UInt8 | Int32 | Char))
       @byte_set = Set(Int32).new(values.size)
       @char_set = Set(Char).new(values.size)
 
