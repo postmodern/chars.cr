@@ -650,6 +650,18 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#+" do
+    mock Chars::CharSet do
+      stub :|, other : Chars::CharSet
+    end
+
+    let(other) { described_class.new }
+    let(return_value) { described_class.new }
+
+    it "must call #+" do
+      expect(subject).to receive(:|).with(other).and_return(return_value)
+
+      expect(subject + other).to be(return_value)
+    end
   end
 
   describe "#-" do
@@ -760,5 +772,17 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#~" do
+    mock Chars::CharSet do
+      stub :===, other : String
+    end
+
+    let(other) { "foo" }
+    let(return_value) { true }
+
+    it "must call #===" do
+      expect(subject).to receive(:===).with(other).and_return(return_value)
+
+      expect(subject =~ other).to be(return_value)
+    end
   end
 end
