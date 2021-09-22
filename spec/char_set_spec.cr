@@ -466,7 +466,7 @@ Spectator.describe Chars::CharSet do
   describe "#each_substring_with_index(&block : (String, Int32) ->)" do
     subject { described_class.new(['A', 'B', 'C']) }
 
-    let(:string) { "....AAAA....BBBB....CCCC...." }
+    let(string) { "....AAAA....BBBB....CCCC...." }
 
     it "must yield each matching substring and index" do
       yielded_args = [] of {String, Int32}
@@ -485,7 +485,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "when the string begins with a matching substring" do
-      let(:string) { "AAAA...." }
+      let(string) { "AAAA...." }
 
       it "must yield the first matching substring" do
         yielded_args = [] of {String, Int32}
@@ -499,7 +499,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "when the string ends with a matching substring" do
-      let(:string) { "AAAA....BBBB....CCCC" }
+      let(string) { "AAAA....BBBB....CCCC" }
 
       it "must yield the last matching substring" do
         yielded_args = [] of {String, Int32}
@@ -513,7 +513,7 @@ Spectator.describe Chars::CharSet do
     end
 
     context "when the entire string is a matching substring" do
-      let(:string) { "AAAAAAAA" }
+      let(string) { "AAAAAAAA" }
 
       it "must yield the entire string" do
         yielded_args = [] of {String, Int32}
@@ -573,7 +573,7 @@ Spectator.describe Chars::CharSet do
   describe "#substrings_with_indexes" do
     subject { described_class.new(['A', 'B', 'C']) }
 
-    let(:string) { "....AAAA....BBBB....CCCC...." }
+    let(string) { "....AAAA....BBBB....CCCC...." }
 
     it "must return the Array of substrings and their indexes" do
       expect(subject.substrings_with_indexes(string)).to eq(
@@ -589,7 +589,7 @@ Spectator.describe Chars::CharSet do
   describe "#each_substring(&block : (String) ->)" do
     subject { described_class.new(['A', 'B', 'C']) }
 
-    let(:string) { "....AAAA....BBBB....CCCC...." }
+    let(string) { "....AAAA....BBBB....CCCC...." }
 
     it "must yield each matching substring" do
       yielded_args = [] of String
@@ -611,7 +611,7 @@ Spectator.describe Chars::CharSet do
   describe "#substrings" do
     subject { described_class.new(['A', 'B', 'C']) }
 
-    let(:string) { "....AAAA....BBBB....CCCC...." }
+    let(string) { "....AAAA....BBBB....CCCC...." }
 
     it "must return the Array of matching substrings" do
       yielded_args = [] of String
