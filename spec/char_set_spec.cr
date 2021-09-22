@@ -614,8 +614,6 @@ Spectator.describe Chars::CharSet do
     let(string) { "....AAAA....BBBB....CCCC...." }
 
     it "must return the Array of matching substrings" do
-      yielded_args = [] of String
-
       expect(subject.substrings(string)).to eq(
         [
           "AAAA",
