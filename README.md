@@ -5,7 +5,6 @@
 * [Source](https://github.com/postmodern/chars.cr#readme)
 * [Issues](https://github.com/postmodern/chars.cr/issues)
 * [Documentation](https://postmodern.github.io/docs/chars.cr)
-* [Email](mailto:postmodern.mod3 at gmail.com)
 
 ## Description
 
