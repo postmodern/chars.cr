@@ -200,14 +200,14 @@ module Chars
     # Enumerates over `n` random bytes from the `CharSet`.
     #
     def each_random_byte(n : Int, &block : (Int32) ->)
-      n.times { yield random_byte }
+      n.times { block.call(random_byte) }
     end
 
     #
     # Enumerates over `n` random chars from the `CharSet`.
     #
     def each_random_char(n : Int, &block : (Char) ->)
-      n.times { yield random_char }
+      n.times { block.call(random_char) }
     end
 
     #
