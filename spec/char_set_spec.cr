@@ -648,12 +648,12 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#+" do
-    mock Chars::CharSet do
-      stub :|, other : Chars::CharSet
-    end
+    mock(Chars::CharSet)
 
-    let(other) { described_class.new }
-    let(return_value) { described_class.new }
+    subject { mock(Chars::CharSet) }
+
+    let(other) { mock(Chars::CharSet) }
+    let(return_value) { mock(Chars::CharSet) }
 
     it "must call #+" do
       expect(subject).to receive(:|).with(other).and_return(return_value)
@@ -770,9 +770,9 @@ Spectator.describe Chars::CharSet do
   end
 
   describe "#~" do
-    mock Chars::CharSet do
-      stub :===, other : String
-    end
+    mock(Chars::CharSet)
+
+    subject { mock(Chars::CharSet) }
 
     let(other) { "foo" }
     let(return_value) { true }
