@@ -327,7 +327,7 @@ module Chars
             if match_length >= min_length
               match = data[match_start,match_length]
 
-              yield match, match_start
+              block.call(match,match_start)
             end
 
             match_start = match_end = nil
@@ -339,7 +339,9 @@ module Chars
 
       # yield the remaining match
       if match_start
-        yield data[match_start, data.size - match_start], match_start
+        last_match = data[match_start, data.size - match_start]
+
+        block.call(last_match,match_start)
       end
     end
 
@@ -364,7 +366,7 @@ module Chars
     #
     def each_substring(data : String, min_length : Int = 4, &block : (String) ->)
       each_substring_with_index(data,min_length) do |substring,index|
-        yield substring
+        block.call(substring)
       end
     end
 
