@@ -199,15 +199,15 @@ module Chars
     #
     # Enumerates over `n` random bytes from the `CharSet`.
     #
-    def each_random_byte(n : Int, &block : (Int32) ->)
-      n.times { block.call(random_byte) }
+    def each_random_byte(n : Int, & : (Int32) ->)
+      n.times { yield random_byte }
     end
 
     #
     # Enumerates over `n` random chars from the `CharSet`.
     #
-    def each_random_char(n : Int, &block : (Char) ->)
-      n.times { block.call(random_char) }
+    def each_random_char(n : Int, & : (Char) ->)
+      n.times { yield random_char }
     end
 
     #
@@ -306,7 +306,7 @@ module Chars
     # Enumerates over all substrings and their indices within the given string,
     # of minimum length and that are made up of characters from the `CharSet`.
     #
-    def each_substring_with_index(data : String, min_length : Int = 4, &block : (String, Int32) ->)
+    def each_substring_with_index(data : String, min_length : Int = 4, & : (String, Int32) ->)
       return if data.size < min_length
 
       index : Int32 = 0
@@ -327,7 +327,7 @@ module Chars
             if match_length >= min_length
               match = data[match_start,match_length]
 
-              block.call(match,match_start)
+              yield match, match_start
             end
 
             match_start = match_end = nil
@@ -341,7 +341,7 @@ module Chars
       if match_start
         last_match = data[match_start, data.size - match_start]
 
-        block.call(last_match,match_start)
+        yield last_match, match_start
       end
     end
 
@@ -364,9 +364,9 @@ module Chars
     # Enumerates over all substrings within the given string, of minimum length
     # and that are made up of characters from the `CharSet`.
     #
-    def each_substring(data : String, min_length : Int = 4, &block : (String) ->)
+    def each_substring(data : String, min_length : Int = 4, & : (String) ->)
       each_substring_with_index(data,min_length) do |substring,index|
-        block.call(substring)
+        yield substring
       end
     end
 
